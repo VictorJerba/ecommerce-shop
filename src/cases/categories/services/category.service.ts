@@ -17,9 +17,4 @@ export const CategoryService = {
         return result.data;
     },
 
-    async update(id: string, category: CategoryDTO): Promise<CategoryDTO> {
-        const result = await api.put(`${_ENDPOINT}/${id}`, category);
-        return result.data;
-    },
-
 };
