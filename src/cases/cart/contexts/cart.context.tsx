@@ -29,24 +29,26 @@ export function CartContextProvider({
     
     const [cart, setCart] = useState<Cart>({ items: [] });
 
-    //Salva carrinho sempre que mudar
-    useEffect (() => {
-        localStorage.setItem('cart', JSON.stringify(cart));
-    },[cart])
 
     //Carrega Carrinho do LocalStorage quando iniciar
 
-    useEffect (() => {
-        const storedCart = localStorage.getItem('cart');
-        console.log('Entrei 2:', storedCart);
-        if (storedCart) {
-            try {
-                setCart(JSON.parse(storedCart));
-            } catch  {
-                setCart({ items: [] });
-            }
-        }
-    },[])
+    useEffect(() => {
+  const storedCart = localStorage.getItem('cart');
+
+  if (storedCart) {
+    try {
+      setCart(JSON.parse(storedCart));
+    } catch {console.log('entrei')
+      setCart({ items: [] });
+    }
+  }
+}, []);
+
+//Salva carrinho sempre que mudar
+useEffect (() => {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    },[cart])
+    
 
     function addProduct(product: ProductDTO, quantity: number= 1) {
        
@@ -73,6 +75,7 @@ export function CartContextProvider({
     }
 
     function removeProductCart(productId: string) {
+        console.log ('remover')
         setCart((prevCart: Cart) => (
             {
                 items: prevCart.items.filter((item) => item.product.id !== productId),

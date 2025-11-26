@@ -51,7 +51,7 @@ export function ProductCard({
                     <FormattedNumber value={product.price } 
                     style="currency" currency="BRL" />
                 </IntlProvider>
-                no PIX
+                10% de desconto no PIX
             </p>
         </div>
       </CardContent>
