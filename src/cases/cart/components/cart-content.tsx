@@ -7,10 +7,67 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Trash2 } from "lucide-react";
 import { QuantityInput } from "@/components/ui/quantity-imput";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { useNavigate } from "react-router-dom";
+import type { CustomerDTO } from "@/cases/customers/dtos/customer.dto";
+import { useAuth } from "@/cases/auth/hooks/use-auth";
+import type { OrderDTO, OrderItemDTO } from "@/cases/order/dtos/order.dto";
+import { useCreateOrder } from "@/cases/order/hooks/use-order";
 
 export function CartContent() {
-  const { cart, removeProductCart } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const { cart, removeProductCart, clearCart } = useCart();
+
+const createOrder = useCreateOrder();
+
   const bucketBaseURL = import.meta.env.VITE_BUCKET_BASE_URL;
+
+  function handleCreateOrder() {
+    if (!user) {
+      navigate('/signin?redirect=/cart');
+    } else {
+      //TO DO RECUPERAR DADOS DO CLIENTE 
+      const customer: CustomerDTO = {
+        id: user.id,
+        name: user.name
+      };
+
+      //Recuperar itens do carrinho e montar itens do pedido
+
+      const items: OrderItemDTO[] = [];
+
+          cart.items.forEach((item) => {
+          items.push({
+            product: item.product,
+            quantity: item.quantity,
+            value: item.product.price,
+            total: item.quantity * item.product.price,
+            status: "NEW",
+            createdAt: new Date()
+          });
+        });
+
+
+      //Montar o pedido 
+      const order: OrderDTO= {
+        customer: customer,
+        status: 'NEW',
+        items: items
+      }
+
+      //Chamar o hook para criar o pedido
+      createOrder.mutate (
+        order, {
+          onSuccess: () => {
+            clearCart();
+            navigate('/orders');
+          }
+        }
+      )
+
+    }
+  }
 
   return (
     <IntlProvider locale="pt-BR">
@@ -162,7 +219,7 @@ export function CartContent() {
             </CardContent>
 
             <CardFooter>
-              <Button className="w-full bg-green-600 hover:bg-green-700 text-light">
+              <Button className="w-full bg-green-600 hover:bg-green-700 text-light" onClick={handleCreateOrder}>
                 Finalizar Compra
               </Button>
             </CardFooter>
