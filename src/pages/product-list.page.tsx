@@ -9,7 +9,8 @@ export function ProductListPage() {
 
   const categoryId = searchParams.get('categoryId') || undefined;
 
-  const { data: products, isLoading } = useProducts();
+  // ✅ AGORA SIM FILTRA
+  const { data: products, isLoading } = useProducts(categoryId);
 
   return (
     <>
@@ -17,15 +18,14 @@ export function ProductListPage() {
       <section className="flex flex-col">
         <div className="flex mt-8 gap-8">
           {products && products.map((product) => (
-              <Link
-                key={product.id}
-                to={`/product/${product.id}`}
-              >
-                <ProductCard product={product} />
-              </Link>
-            ))}
+            <Link
+              key={product.id}
+              to={`/product/${product.id}`}
+            >
+              <ProductCard product={product} />
+            </Link>
+          ))}
         </div>
-        
       </section>
     </>
   );
