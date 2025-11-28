@@ -20,7 +20,7 @@ export function ProductListPage() {
     setFiltered(products ?? []);
   }, [products]);
 
-  // 🔍 Função de busca local
+  // Função de busca local
   function handleSearch(value: string) {
     setSearch(value);
     const lower = value.toLowerCase();
@@ -37,7 +37,7 @@ export function ProductListPage() {
     <>
       <CategoryMenu />
 
-      {/* 🔎 Barra de busca */}
+      {/*Barra de busca */}
       <div className="w-full max-w-lg mt-4">
         <input
           type="text"

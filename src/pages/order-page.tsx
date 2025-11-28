@@ -1,4 +1,5 @@
 import { OrderContent } from "@/cases/order/components/order-content";
+import { useOrders } from "@/cases/order/hooks/use-order"; 
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,7 +10,8 @@ import {
 } from "@/components/ui/breadcrumb";
 
 export function OrderPage() {
-  const { data: orders} = useOrders();
+  
+  const { data: orders, isLoading } = useOrders();
 
   return (
     <div className="p-4">
@@ -19,6 +21,9 @@ export function OrderPage() {
             <BreadcrumbLink href="/">Home</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/minha-conta">Minha Conta</BreadcrumbLink>
+          </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbPage>Pedidos</BreadcrumbPage>
@@ -28,9 +33,13 @@ export function OrderPage() {
 
       <div className="py-8">
         {isLoading ? (
-            <h1>Carregando</h1>
-        )  : (
-            <OrderContent orders={orders!} />
+            
+            <div className="text-center py-10 text-gray-500 animate-pulse">
+                Carregando seus pedidos...
+            </div>
+        ) : (
+            
+            <OrderContent orders={orders || []} />
         )}
       </div>
     </div>
