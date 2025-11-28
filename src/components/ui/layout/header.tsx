@@ -1,12 +1,12 @@
 import { useCart } from "@/cases/cart/hooks/use-cart";
-import { ShoppingCart, User, Heart } from "lucide-react"; // Adicionei Heart
+import { ShoppingCart, User, Heart } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Badge } from "../badge";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/cases/auth/hooks/use-auth";
-// Importação do Contexto de Favoritos
 import { useWishlist } from "@/cases/wishlist/context/wishlist-context";
+import logoImg from "@/assets/logo.png";
 
 import { 
   DropdownMenu, 
@@ -21,8 +21,6 @@ export function Header() {
   const navigate = useNavigate();
   const { cart } = useCart();
   const { user, signOut } = useAuth();
-  
-  // Pegamos os itens da lista de desejos (renomeei para wishlistItems para não confundir)
   const { items: wishlistItems } = useWishlist();
 
   function handleSignOut() {
@@ -34,13 +32,14 @@ export function Header() {
     <header className="w-full border-b bg-white">
       <div className="container mx-auto flex items-center justify-between py-4 px-4 gap-4">
 
-        {/* LOGO */}
+        {/* LOGO COM IMAGEM IMPORTADA */}
         <Link to="/">
             <div className="flex items-center gap-2 cursor-pointer">
-            <ShoppingCart className="text-green-600" />
-            <h1 className="text-lg font-bold">
-                <span className="font-light">Oasis</span> Shop
-            </h1>
+            <img 
+                src={logoImg} 
+                alt="Oasis Shop" 
+                className="h-12 w-auto object-contain" // Ajuste o h-12 para aumentar/diminuir
+            />
             </div>
         </Link>
 
@@ -54,15 +53,14 @@ export function Header() {
             </Link>
           )}
 
-          {/* --- BOTÃO DE FAVORITOS (NOVO) --- */}
+          {/* BOTÃO DE FAVORITOS */}
           <Link to="/wishlist" className="relative">
             <Button
               variant="ghost"
               size="icon"
               className="hover:text-red-600 hover:bg-red-50 relative group"
             >
-              {/* O coração preenche (fill) quando passa o mouse */}
-              <Heart className="group-hover:fill-current transition-all" />
+              <Heart className="h-5 w-5 group-hover:fill-current transition-all" />
               
               {wishlistItems.length > 0 && (
                 <Badge
@@ -75,7 +73,6 @@ export function Header() {
               )}
             </Button>
           </Link>
-          {/* ------------------------------- */}
 
           {/* BOTÃO DO CARRINHO */}
           <Link to="/cart" className="relative">
@@ -84,7 +81,7 @@ export function Header() {
               size="icon"
               className="hover:text-green-700 relative"
             >
-              <ShoppingCart />
+              <ShoppingCart className="h-5 w-5" />
               {cart.items.length > 0 && (
                 <Badge
                   className={cn(
@@ -106,7 +103,7 @@ export function Header() {
                   size="icon"
                   className="hover:text-green-700"
                 >
-                  <User />
+                  <User className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
 
